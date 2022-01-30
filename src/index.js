@@ -19,14 +19,46 @@ const onClickAdd = () => {
   completeButton.innerText = "完了";
   completeButton.addEventListener("click", () => {
     // 押された完了ボタンの親タグを未完了リストから削除
-    deleteFromIncompleteList(completeButton.parentNode.parentNode);
+    deleteFromList("incomplete-list", completeButton.parentNode.parentNode);
     // 完了リストに追加
-    const addTarget = completeButton.parentNode;
+    const addTarget = completeButton.parentNode.parentNode;
     // テキスト内容を取得
-    const text = addTarget.firstElementChild.innerText;
+    const text = addTarget.firstElementChild.firstElementChild.innerText;
     // li以下を初期化
     addTarget.textContent = null;
-    console.log(addTarget);
+    // divタグを生成
+    const addDiv = document.createElement("div");
+    addDiv.className = "list-row";
+    // pタグを生成
+    const addP_tag = document.createElement("p");
+    addP_tag.innerText = inputText;
+    // buttonタグを生成
+    const backButton = document.createElement("button");
+    backButton.innerText = "戻す";
+    backButton.addEventListener("click", () => {
+      // 戻すボタンの親タグを完了リストから削除
+      const deleteTarget = backButton.parentNode.parentNode;
+      deleteFromList("complete-list", deleteTarget);
+      // テキストを取得
+      const text = deleteTarget.firstElementChild.firstElementChild.innerText;
+      // li以下を初期化
+      deleteTarget.textContent = null;
+      // ｐタグにテキストを入力
+      p_tag.innerText = text;
+      // liタグの子要素に各要素を設定
+      deleteTarget.appendChild(div);
+      div.appendChild(p_tag);
+      div.appendChild(completeButton);
+      div.appendChild(deleteButton);
+
+      document.getElementById("incomplete-list").appendChild(deleteTarget);
+    });
+    //  liタグの子要素を設定
+    addTarget.appendChild(addDiv);
+    addDiv.appendChild(addP_tag);
+    addDiv.appendChild(backButton);
+    // 完了リストに追加
+    document.getElementById("complete-list").appendChild(addTarget);
   });
 
   // button（削除）タグの生成
@@ -34,7 +66,7 @@ const onClickAdd = () => {
   deleteButton.innerText = "削除";
   deleteButton.addEventListener("click", () => {
     // 押された削除ボタンの親タグを未完了リストから削除
-    deleteFromIncompleteList(deleteButton.parentNode.parentNode);
+    deleteFromList("incomplete-list", deleteButton.parentNode.parentNode);
   });
 
   //liタグの子要素に各要素を設定
@@ -42,15 +74,14 @@ const onClickAdd = () => {
   div.appendChild(p_tag);
   div.appendChild(completeButton);
   div.appendChild(deleteButton);
-  console.log(li);
 
   //未完了リストに追加
   document.getElementById("incomplete-list").appendChild(li);
 };
 
 // 未完了リストから指定の要素を削除
-const deleteFromIncompleteList = (target) => {
-  document.getElementById("incomplete-list").removeChild(target);
+const deleteFromList = (list, target) => {
+  document.getElementById(list).removeChild(target);
 };
 
 document
